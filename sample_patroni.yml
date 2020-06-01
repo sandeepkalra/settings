@@ -1,0 +1,146 @@
+scope: heroapp
+namespace: my_namespc
+name: id0
+
+log:
+  level: INFO
+  traceback_level: debug
+  dir: /root/log/
+   
+restapi:
+  listen: self_ip:8008
+  connect_address: self_ip:8008
+
+zookeeper:
+  hosts: zk:2181
+
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+    max_timelines_history: 0
+    check_timeline: false
+    standby_cluster:
+      create_replica_method:
+        - basebackup
+    postgresql:
+      use_pg_rewind: true
+      use_slots: false
+      parameters:
+         hot_standby: "on"
+         wal_log_hints: "on"
+         hot_standby_feedback: "on"
+         wal_level: "hot_standby"
+         track_commit_timestamp: "off"
+         wal_keep_segments: 100
+         max_wal_senders: 5
+         max_replication_slots: 0
+         max_prepared_transactions: 25
+         max_connections: 25
+         max_locks_per_transaction: 25
+         max_worker_processes: 5
+  initdb:
+        - encoding: UTF8
+        - data-checksums
+  pg_hba: 
+    - host replication repliuser self_ip/0  md5
+    - host all superuser self_ip/0 md5
+    - host all rewinduser self_ip/0 md5
+    - host all normaluser self_ip/0 md5
+    - host replication repliuser 0.0.0.0/0  md5
+    - host all superuser 0.0.0.0/0 md5
+    - host all rewinduser 0.0.0.0/0 md5
+    - host all normaluser 0.0.0.0/0 md5
+    - host all all self_ip/0 md5
+  users:
+    normaluser:
+        password: kk
+        options:
+            - createrole
+            - createdb
+
+postgresql:
+  listen: self_ip:5432
+  connect_address: self_ip:5432
+  config_dir: /root/data/psql/
+  data_dir: /root/data/psql/
+  bin_dir: /usr/lib/postgresql/11/bin/
+  create_replica_method:
+    - basebackup
+  callbacks:
+    on_start: /root/src/chetak/callbacks.py
+    on_stop: /root/src/chetak/callbacks.py
+    on_role_change: /root/src/chetak/callbacks.py
+  authentication:
+    replication:
+      username: repliuser
+      password: k
+    superuser:
+      username: superuser
+      password: k
+    rewind:
+      username: rewinduser
+      password: k
+  pgpass: /root/data/.pgpass
+  parameters:
+    unix_socket_directories: '.'
+    shared_buffers: 512MB
+    maintenance_work_mem: 100MB
+    wal_writer_delay: 500ms
+    commit_delay: 500
+    autovacuum_max_workers: 1
+    autovacuum_work_mem: 500MB
+    autovacuum_vacuum_cost_delay: 20ms
+    autovacuum_vacuum_cost_limit: 200
+    autovacuum_vacuum_scale_factor: 0.00
+    autovacuum_analyze_scale_factor: 0.0
+    autovacuum_naptime: 1
+    checkpoint_completion_target: 0.
+    bgwriter_delay: 1000
+    bgwriter_lru_maxpages: 100
+    bgwriter_lru_multiplier: 1
+    temp_buffers: 32MB
+    max_stack_depth: 4MB
+    escape_string_warning: "off"
+    standard_conforming_strings: "on"
+    pg_stat_statements.max: 50
+    track_activity_query_size: 204
+    track_io_timing: "on"
+    tcp_keepalives_idle: 6
+    tcp_keepalives_interval: 1
+    tcp_keepalives_count: 0
+    logging_collector: "on"
+    log_min_messages: DEBUG1
+    log_rotation_size: 1MB
+    log_truncate_on_rotation: "true"
+    log_destination: "stderr"
+    log_directory: "/root/log/pg_log/"
+    log_file_mode: "0644"
+    log_filename: "postgresql.log"
+    log_line_prefix: '%t %n [%p]: [%l] sqlstate=%e application_name=%a,user=%u,db=%d,client=%h '
+    log_min_duration_statement: 0
+    log_statement: all
+    log_checkpoints: "on"
+    log_connections: "on"
+    log_disconnections: "on"
+    log_lock_waits: "on"
+    log_temp_files: 0
+    log_autovacuum_min_duration: 0
+    synchronous_commit: on
+    work_mem: 100MB
+    max_wal_size: 10GB
+    checkpoint_timeout: 15min
+    idle_in_transaction_session_timeout: 5min
+    default_statistics_target: 10000
+    effective_cache_size: 512MB
+    max_parallel_workers_per_gather: 2
+    effective_io_concurrency: 2
+    shared_preload_libraries: pg_stat_statements,timescaledb
+
+tags:
+    nofailover: false
+    noloadbalance: false
+    clonefrom: true
+    nosync: false
