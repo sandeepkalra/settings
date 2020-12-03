@@ -11,6 +11,16 @@
  Plugin 'VundleVim/Vundle.vim'
  Plugin 'davidhalter/jedi-vim'
  Plugin 'klen/python-mode'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'kien/ctrlp.vim'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jnurmine/Zenburn'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'lyuts/vim-rtags'
+Plugin 'ycm-core/YouCompleteMe'
 
  
  " The following are examples of different formats supported.
