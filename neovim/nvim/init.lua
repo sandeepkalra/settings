@@ -19,13 +19,18 @@ require("lazy").setup({
 	{
 		"Mofiqul/dracula.nvim",
 		dependencies = {
-			{ "folke/tokyonight.nvim" },
-			{ "rose-pine/neovim", name = "rose-pine" },
-			{ "catppuccin/nvim", name = "catppuccin" },
+			{ "rose-pine/neovim",         name = "rose-pine" },
+			{ "catppuccin/nvim",          name = "catppuccin" },
 			{ "ellisonleao/gruvbox.nvim", opts = { contrast = "hard" } },
+			{ "Mofiqul/vscode.nvim",      name = "vscode" },
 		},
 		config = function()
-			pcall(vim.cmd.colorscheme, "dracula")
+			require("vscode").setup({
+				transparent = true,
+				italic_comments = true,
+			})
+			vim.o.background = "dark" -- light
+			pcall(vim.cmd.colorscheme, "vscode")
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
@@ -33,7 +38,7 @@ require("lazy").setup({
 	},
 	-- ]]]
 
-	{ "numToStr/Comment.nvim", opts = {} }, -- Comment
+	{ "numToStr/Comment.nvim",     opts = {} }, -- Comment
 
 	{
 		-- telescope: Fuzzy finding and searching interface
@@ -53,7 +58,8 @@ require("lazy").setup({
 		dependencies = {
 			{
 				"nvim-treesitter/nvim-treesitter",
-				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", "nvim-treesitter/playground" },
+				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects",
+					"nvim-treesitter/playground" },
 			},
 			{ "williamboman/mason.nvim", dependencies = { "williamboman/mason-lspconfig.nvim" } },
 			"folke/neodev.nvim",
@@ -123,7 +129,8 @@ require("lazy").setup({
 					require("lspconfig")[server_name].setup({
 						settings = lsp_servers[server_name],
 						handlers = {
-							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border =
+							"rounded" }),
 							["textDocument/signatureHelp"] = vim.lsp.with(
 								vim.lsp.handlers.signature_help,
 								{ border = "rounded" }
@@ -172,14 +179,14 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "stevearc/oil.nvim", opt = {} }, -- File manager like a BOSS
-	{ "pbrisbin/vim-mkdir" }, -- Automatically create directory if not exists
-	{ "fladson/vim-kitty" }, -- Support Kitty terminal config syntax
-	{ "towolf/vim-helm" }, -- Support for helm template syntax
-	{ "tpope/vim-surround" }, -- surrounding text objects
+	{ "stevearc/oil.nvim",    opt = {} }, -- File manager like a BOSS
+	{ "pbrisbin/vim-mkdir" },   -- Automatically create directory if not exists
+	{ "fladson/vim-kitty" },    -- Support Kitty terminal config syntax
+	{ "towolf/vim-helm" },      -- Support for helm template syntax
+	{ "tpope/vim-surround" },   -- surrounding text objects
 	{ "kevinhwang91/nvim-bqf" }, -- Preview quickfix list item.
-	{ "tpope/vim-eunuch" }, -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
-	{ "tpope/vim-sleuth" }, -- Heuristically set buffer options
+	{ "tpope/vim-eunuch" },     -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
+	{ "tpope/vim-sleuth" },     -- Heuristically set buffer options
 	{ "windwp/nvim-autopairs" }, -- Auto insert pairs like () [] {}
 	{
 		"lewis6991/gitsigns.nvim",
@@ -200,7 +207,7 @@ require("lazy").setup({
 				vim.cmd.Git("push")
 			end, {})
 		end,
-	}, -- Best Git Client after magit :)
+	},                -- Best Git Client after magit :)
 	{ "dag/vim-fish" }, -- Vim fish syntax
 	{ "jansedivy/jai.vim" }, -- Jai from Jonathan Blow
 	{
@@ -389,7 +396,7 @@ require("lazy").setup({
 -- ==========================================================================
 -- ============================ Options ====================================
 -- ==========================================================================
-vim.opt.number = true -- Line numbers
+vim.opt.number = true         -- Line numbers
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.errorbells = false
 vim.opt.smartindent = true
@@ -404,8 +411,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.guicursor = ""
-vim.opt.shortmess:append("c") -- Don't pass messages to |ins-completion-menu|.
-vim.opt.shortmess:append("I") -- No Intro message
+vim.opt.shortmess:append("c")           -- Don't pass messages to |ins-completion-menu|.
+vim.opt.shortmess:append("I")           -- No Intro message
 vim.opt.clipboard:append("unnamedplus") -- use system clipboard as default register.
 vim.opt.splitbelow = true
 vim.opt.splitright = true
