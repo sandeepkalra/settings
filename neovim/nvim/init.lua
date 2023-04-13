@@ -17,28 +17,60 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- Colorschemes [[[
 	{
-		"Mofiqul/dracula.nvim",
+		"dhananjaylatkar/cscope_maps.nvim",
+		config = function()
+			require("cscope_maps").setup({
+				disable_maps = false, -- true disables my keymaps, only :Cscope will be loaded
+				cscope = {
+					db_file = "./cscope.out", -- location of cscope db file
+				},
+			})
+		end,
+	},
+	{
+		"tiagovla/tokyodark.nvim",
 		dependencies = {
-			{ "rose-pine/neovim",         name = "rose-pine" },
-			{ "catppuccin/nvim",          name = "catppuccin" },
-			{ "ellisonleao/gruvbox.nvim", opts = { contrast = "hard" } },
-			{ "Mofiqul/vscode.nvim",      name = "vscode" },
+			{ "Mofiqul/dracula.nvim",       name = "dracula" },
+			{ "rose-pine/neovim",           name = "rose-pine" },
+			{ "catppuccin/nvim",            name = "catppuccin" },
+			{ "ellisonleao/gruvbox.nvim",   opts = { contrast = "hard" } },
+			{ "navarasu/onedark.nvim",      name = "onedark" },
+			{ "tiagovla/tokyodark.nvim",    name = "tokyodark" },
+			{ "Mofiqul/vscode.nvim",        name = "vscode" },
+			{ "NLKNguyen/papercolor-theme", name = "PaperColor" },
 		},
 		config = function()
 			require("vscode").setup({
 				transparent = true,
 				italic_comments = true,
 			})
+			require("onedark").setup({
+				style = "dark",
+				transparent = false,
+				term_colors = true,
+				toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer", "light" },
+				colors = {
+					bright_orange = "#0f8800", -- define a new color
+					green = "#019f0a", -- redefine an existing color
+				},
+				highlights = {
+					TSKeyword = { fg = "$green" },
+					TSString = { fg = "$bright_orange", bg = "#00ff00", fmt = "bold" },
+					TSFunction = { fg = "#0000ff", sp = "$cyan", fmt = "underline,italic" },
+					TSFuncBuiltin = { fg = "#0059ff" },
+				},
+			})
+			pcall(vim.cmd.colorscheme, "tokyodark")
+
 			vim.o.background = "dark" -- light
-			pcall(vim.cmd.colorscheme, "vscode")
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 		end,
 	},
 	-- ]]]
-
-	{ "numToStr/Comment.nvim",     opts = {} }, -- Comment
+	{ "darrikonn/vim-gofmt" },
+	{ "numToStr/Comment.nvim", opts = {} }, -- Comment
 
 	{
 		-- telescope: Fuzzy finding and searching interface
@@ -117,7 +149,7 @@ require("lazy").setup({
 					},
 				},
 				rust_analyzer = {},
-				zls = {},
+				-- zls = {},
 			}
 
 			mason_lspconfig.setup({
@@ -179,7 +211,7 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "stevearc/oil.nvim",    opt = {} }, -- File manager like a BOSS
+	{ "stevearc/oil.nvim",         opt = {} }, -- File manager like a BOSS
 	{ "pbrisbin/vim-mkdir" },   -- Automatically create directory if not exists
 	{ "fladson/vim-kitty" },    -- Support Kitty terminal config syntax
 	{ "towolf/vim-helm" },      -- Support for helm template syntax
@@ -220,6 +252,7 @@ require("lazy").setup({
 		end,
 	},
 	{ "nvim-lua/plenary.nvim" },
+	{ "nvim-lua/lsp_extensions.nvim" },
 	{
 		-- simrat39 START
 		"simrat39/rust-tools.nvim",
@@ -424,7 +457,7 @@ vim.g.netrw_winsize = 25
 -- ==========================================================================
 -- ========================= Keybindings ====================================
 -- ==========================================================================
-vim.g.mapleader = " "
+vim.g.mapleader = "+"
 local bind = vim.keymap.set
 -- Editing
 bind("t", "<Esc>", "<C-\\><C-n>")
@@ -492,7 +525,7 @@ bind("n", "<C-[>", "<C-t>")
 bind("n", "<C-]>", "<C-]>")
 bind("n", "<leader>?", ":RustEnableInlayHints<Esc>")
 bind("n", "<leader>x", ":RustDisableInlayHints<Esc>")
-
+bind("n", "<leader>s", ":lua require('lsp_extensions').inlay_hints()<Esc>", { buffer = 0 })
 -- LSP
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
@@ -517,3 +550,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, buffer)
 	end,
 })
+vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format()]])
+vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format()]])
+require("cscope_maps").setup({ db_file = "./cscope.out" })
+
+-- require("lsp-inlayhints").toggle()
+-- vim.g.tokyodark.tokyodark_transparent_background = true
+-- vim.g.tokyodark.tokyodark_enable_italic_comment = true
+-- vim.g.tokyodark.tokyodark_enable_italic = true
+-- vim.g.tokyodark_color_gamma = "1.0"
