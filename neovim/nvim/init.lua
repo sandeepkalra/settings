@@ -20,7 +20,7 @@ require("lazy").setup({
 		"dhananjaylatkar/cscope_maps.nvim",
 		config = function()
 			require("cscope_maps").setup({
-				disable_maps = false, -- true disables my keymaps, only :Cscope will be loaded
+				disable_maps = false,  -- true disables my keymaps, only :Cscope will be loaded
 				cscope = {
 					db_file = "./cscope.out", -- location of cscope db file
 				},
@@ -28,18 +28,56 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"tiagovla/tokyodark.nvim",
+		"Mofiqul/dracula.nvim",
 		dependencies = {
-			{ "Mofiqul/dracula.nvim",       name = "dracula" },
-			{ "rose-pine/neovim",           name = "rose-pine" },
-			{ "catppuccin/nvim",            name = "catppuccin" },
-			{ "ellisonleao/gruvbox.nvim",   opts = { contrast = "hard" } },
-			{ "navarasu/onedark.nvim",      name = "onedark" },
-			{ "tiagovla/tokyodark.nvim",    name = "tokyodark" },
-			{ "Mofiqul/vscode.nvim",        name = "vscode" },
-			{ "NLKNguyen/papercolor-theme", name = "PaperColor" },
+			{ "Mofiqul/dracula.nvim",             name = "dracula" },
+			{ "rose-pine/neovim",                 name = "rose-pine" },
+			{ "EdenEast/nightfox.nvim",           name = "nightfox" },
+			{ "catppuccin/nvim",                  name = "catppuccin" },
+			{ "ellisonleao/gruvbox.nvim",         opts = { contrast = "hard" } },
+			{ "navarasu/onedark.nvim",            name = "onedark" },
+			{ "tiagovla/tokyodark.nvim",          name = "tokyodark" },
+			{ "Mofiqul/vscode.nvim",              name = "vscode" },
+			{ "NLKNguyen/papercolor-theme",       name = "PaperColor" },
+			{ "nyoom-engineering/nyoom.nvim",     name = "nyoom" },
+			{ "bluz71/vim-nightfly-colors",       name = "nightfly" },
+			{ "bluz71/vim-moonfly-colors",        name = "moonfly" },
+			{ "nyoom-engineering/oxocarbon.nvim", name = "carbon" },
 		},
 		config = function()
+			require("nightfox").setup({
+				palettes = {
+					-- Custom duskfox with black background
+					duskfox = {
+						bg1 = "#000000", -- Black background
+						bg0 = "#1d1d2b", -- Alt backgrounds (floats, statusline, ...)
+						bg3 = "#121820", -- 55% darkened from stock
+						sel0 = "#131b24", -- 55% darkened from stock
+					},
+				},
+				specs = {
+					all = {
+						inactive = "bg0", -- Default value for other styles
+					},
+					duskfox = {
+						inactive = "#090909", -- Slightly lighter then black background
+					},
+				},
+				groups = {
+					all = {
+						NormalNC = { fg = "fg1", bg = "inactive" }, -- Non-current windows
+					},
+				},
+				options = {
+					colorblind = {
+						enable = true,
+						severity = {
+							protan = 0.3,
+							deutan = 0.6,
+						},
+					},
+				},
+			})
 			require("vscode").setup({
 				transparent = true,
 				italic_comments = true,
@@ -51,7 +89,7 @@ require("lazy").setup({
 				toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer", "light" },
 				colors = {
 					bright_orange = "#0f8800", -- define a new color
-					green = "#019f0a", -- redefine an existing color
+					green = "#019f0a",    -- redefine an existing color
 				},
 				highlights = {
 					TSKeyword = { fg = "$green" },
@@ -60,9 +98,9 @@ require("lazy").setup({
 					TSFuncBuiltin = { fg = "#0059ff" },
 				},
 			})
-			pcall(vim.cmd.colorscheme, "tokyodark")
+			vim.opt.background = "dark" -- light
 
-			vim.o.background = "dark" -- light
+			pcall(vim.cmd.colorscheme, "nightfly")
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
@@ -90,8 +128,7 @@ require("lazy").setup({
 		dependencies = {
 			{
 				"nvim-treesitter/nvim-treesitter",
-				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects",
-					"nvim-treesitter/playground" },
+				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", "nvim-treesitter/playground" },
 			},
 			{ "williamboman/mason.nvim", dependencies = { "williamboman/mason-lspconfig.nvim" } },
 			"folke/neodev.nvim",
@@ -161,8 +198,7 @@ require("lazy").setup({
 					require("lspconfig")[server_name].setup({
 						settings = lsp_servers[server_name],
 						handlers = {
-							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border =
-							"rounded" }),
+							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
 							["textDocument/signatureHelp"] = vim.lsp.with(
 								vim.lsp.handlers.signature_help,
 								{ border = "rounded" }
@@ -212,14 +248,14 @@ require("lazy").setup({
 	},
 
 	{ "stevearc/oil.nvim",         opt = {} }, -- File manager like a BOSS
-	{ "pbrisbin/vim-mkdir" },   -- Automatically create directory if not exists
-	{ "fladson/vim-kitty" },    -- Support Kitty terminal config syntax
-	{ "towolf/vim-helm" },      -- Support for helm template syntax
-	{ "tpope/vim-surround" },   -- surrounding text objects
-	{ "kevinhwang91/nvim-bqf" }, -- Preview quickfix list item.
-	{ "tpope/vim-eunuch" },     -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
-	{ "tpope/vim-sleuth" },     -- Heuristically set buffer options
-	{ "windwp/nvim-autopairs" }, -- Auto insert pairs like () [] {}
+	{ "pbrisbin/vim-mkdir" },         -- Automatically create directory if not exists
+	{ "fladson/vim-kitty" },          -- Support Kitty terminal config syntax
+	{ "towolf/vim-helm" },            -- Support for helm template syntax
+	{ "tpope/vim-surround" },         -- surrounding text objects
+	{ "kevinhwang91/nvim-bqf" },      -- Preview quickfix list item.
+	{ "tpope/vim-eunuch" },           -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
+	{ "tpope/vim-sleuth" },           -- Heuristically set buffer options
+	{ "windwp/nvim-autopairs" },      -- Auto insert pairs like () [] {}
 	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -239,8 +275,8 @@ require("lazy").setup({
 				vim.cmd.Git("push")
 			end, {})
 		end,
-	},                -- Best Git Client after magit :)
-	{ "dag/vim-fish" }, -- Vim fish syntax
+	},                      -- Best Git Client after magit :)
+	{ "dag/vim-fish" },     -- Vim fish syntax
 	{ "jansedivy/jai.vim" }, -- Jai from Jonathan Blow
 	{
 		"akinsho/toggleterm.nvim",
@@ -436,8 +472,8 @@ vim.opt.smartindent = true
 vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undofile = true
-vim.opt.hlsearch = false
+vim.opt.undofile = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
@@ -453,7 +489,14 @@ vim.opt.cursorline = true
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-
+vim.cmd([[
+	set autoindent
+	set expandtab
+	set shiftwidth=2
+	set smartindent
+	set softtabstop=4
+	set tabstop=4
+]])
 -- ==========================================================================
 -- ========================= Keybindings ====================================
 -- ==========================================================================
