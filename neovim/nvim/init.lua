@@ -20,7 +20,7 @@ require("lazy").setup({
 		"dhananjaylatkar/cscope_maps.nvim",
 		config = function()
 			require("cscope_maps").setup({
-				disable_maps = false,  -- true disables my keymaps, only :Cscope will be loaded
+				disable_maps = false, -- true disables my keymaps, only :Cscope will be loaded
 				cscope = {
 					db_file = "./cscope.out", -- location of cscope db file
 				},
@@ -30,18 +30,18 @@ require("lazy").setup({
 	{
 		"Mofiqul/dracula.nvim",
 		dependencies = {
-			{ "Mofiqul/dracula.nvim",             name = "dracula" },
-			{ "rose-pine/neovim",                 name = "rose-pine" },
-			{ "EdenEast/nightfox.nvim",           name = "nightfox" },
-			{ "catppuccin/nvim",                  name = "catppuccin" },
-			{ "ellisonleao/gruvbox.nvim",         opts = { contrast = "hard" } },
-			{ "navarasu/onedark.nvim",            name = "onedark" },
-			{ "tiagovla/tokyodark.nvim",          name = "tokyodark" },
-			{ "Mofiqul/vscode.nvim",              name = "vscode" },
-			{ "NLKNguyen/papercolor-theme",       name = "PaperColor" },
-			{ "nyoom-engineering/nyoom.nvim",     name = "nyoom" },
-			{ "bluz71/vim-nightfly-colors",       name = "nightfly" },
-			{ "bluz71/vim-moonfly-colors",        name = "moonfly" },
+			{ "Mofiqul/dracula.nvim", name = "dracula" },
+			{ "rose-pine/neovim", name = "rose-pine" },
+			{ "EdenEast/nightfox.nvim", name = "nightfox" },
+			{ "catppuccin/nvim", name = "catppuccin" },
+			{ "ellisonleao/gruvbox.nvim", opts = { contrast = "hard" } },
+			{ "navarasu/onedark.nvim", name = "onedark" },
+			{ "tiagovla/tokyodark.nvim", name = "tokyodark" },
+			{ "Mofiqul/vscode.nvim", name = "vscode" },
+			{ "NLKNguyen/papercolor-theme", name = "PaperColor" },
+			{ "nyoom-engineering/nyoom.nvim", name = "nyoom" },
+			{ "bluz71/vim-nightfly-colors", name = "nightfly" },
+			{ "bluz71/vim-moonfly-colors", name = "moonfly" },
 			{ "nyoom-engineering/oxocarbon.nvim", name = "carbon" },
 		},
 		config = function()
@@ -89,7 +89,7 @@ require("lazy").setup({
 				toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer", "light" },
 				colors = {
 					bright_orange = "#0f8800", -- define a new color
-					green = "#019f0a",    -- redefine an existing color
+					green = "#019f0a", -- redefine an existing color
 				},
 				highlights = {
 					TSKeyword = { fg = "$green" },
@@ -247,15 +247,15 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "stevearc/oil.nvim",         opt = {} }, -- File manager like a BOSS
-	{ "pbrisbin/vim-mkdir" },         -- Automatically create directory if not exists
-	{ "fladson/vim-kitty" },          -- Support Kitty terminal config syntax
-	{ "towolf/vim-helm" },            -- Support for helm template syntax
-	{ "tpope/vim-surround" },         -- surrounding text objects
-	{ "kevinhwang91/nvim-bqf" },      -- Preview quickfix list item.
-	{ "tpope/vim-eunuch" },           -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
-	{ "tpope/vim-sleuth" },           -- Heuristically set buffer options
-	{ "windwp/nvim-autopairs" },      -- Auto insert pairs like () [] {}
+	{ "stevearc/oil.nvim", opt = {} }, -- File manager like a BOSS
+	{ "pbrisbin/vim-mkdir" }, -- Automatically create directory if not exists
+	{ "fladson/vim-kitty" }, -- Support Kitty terminal config syntax
+	{ "towolf/vim-helm" }, -- Support for helm template syntax
+	{ "tpope/vim-surround" }, -- surrounding text objects
+	{ "kevinhwang91/nvim-bqf" }, -- Preview quickfix list item.
+	{ "tpope/vim-eunuch" }, -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
+	{ "tpope/vim-sleuth" }, -- Heuristically set buffer options
+	{ "windwp/nvim-autopairs" }, -- Auto insert pairs like () [] {}
 	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -275,8 +275,8 @@ require("lazy").setup({
 				vim.cmd.Git("push")
 			end, {})
 		end,
-	},                      -- Best Git Client after magit :)
-	{ "dag/vim-fish" },     -- Vim fish syntax
+	}, -- Best Git Client after magit :)
+	{ "dag/vim-fish" }, -- Vim fish syntax
 	{ "jansedivy/jai.vim" }, -- Jai from Jonathan Blow
 	{
 		"akinsho/toggleterm.nvim",
@@ -465,7 +465,7 @@ require("lazy").setup({
 -- ==========================================================================
 -- ============================ Options ====================================
 -- ==========================================================================
-vim.opt.number = true         -- Line numbers
+vim.opt.number = true -- Line numbers
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.errorbells = false
 vim.opt.smartindent = true
@@ -480,8 +480,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.guicursor = ""
-vim.opt.shortmess:append("c")           -- Don't pass messages to |ins-completion-menu|.
-vim.opt.shortmess:append("I")           -- No Intro message
+vim.opt.shortmess:append("c") -- Don't pass messages to |ins-completion-menu|.
+vim.opt.shortmess:append("I") -- No Intro message
 vim.opt.clipboard:append("unnamedplus") -- use system clipboard as default register.
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -602,3 +602,9 @@ require("cscope_maps").setup({ db_file = "./cscope.out" })
 -- vim.g.tokyodark.tokyodark_enable_italic_comment = true
 -- vim.g.tokyodark.tokyodark_enable_italic = true
 -- vim.g.tokyodark_color_gamma = "1.0"
+local n_keymap = function(lhs, rhs)
+	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("t", lhs, rhs, { noremap = true, silent = true })
+end
+
+n_keymap("<esc>", "<esc>")
