@@ -15,12 +15,42 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	-- Colorschemes [[[
+	{
+		"akinsho/flutter-tools.nvim",
+		lazy = false,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"stevearc/dressing.nvim", -- optional for vim.ui.select
+		},
+		config = function()
+			require("flutter-tools").setup_project({
+				{
+					name = "Development", -- an arbitrary name that you provide so you can recognise this config
+					flavor = "DevFlavor", -- your flavour
+					target = "lib/main_dev.dart", -- your target
+					device = "pixel6pro", -- the device ID, which you can get by running `flutter devices`
+					dart_define = {
+						API_URL = "https://dev.example.com/api",
+						IS_DEV = true,
+					},
+					dart_define_from_file = "config.json", -- the path to a JSON configuration file
+				},
+				{
+					name = "Web",
+					device = "chrome",
+					flavor = "WebApp",
+				},
+			})
+		end,
+	},
+	{ "MunifTanjim/nui.nvim" },
+	{ "tiagovla/tokyodark.nvim" },
+	{ "nyoom-engineering/nyoom.nvim" },
 	{
 		"dhananjaylatkar/cscope_maps.nvim",
 		config = function()
 			require("cscope_maps").setup({
-				disable_maps = false, -- true disables my keymaps, only :Cscope will be loaded
+				disable_maps = true, -- true disables my keymaps, only :Cscope will be loaded
 				cscope = {
 					db_file = "./cscope.out", -- location of cscope db file
 				},
@@ -30,80 +60,44 @@ require("lazy").setup({
 	{
 		"Mofiqul/dracula.nvim",
 		dependencies = {
-			{ "Mofiqul/dracula.nvim", name = "dracula" },
-			{ "rose-pine/neovim", name = "rose-pine" },
-			{ "EdenEast/nightfox.nvim", name = "nightfox" },
-			{ "catppuccin/nvim", name = "catppuccin" },
-			{ "ellisonleao/gruvbox.nvim", opts = { contrast = "hard" } },
-			{ "navarasu/onedark.nvim", name = "onedark" },
-			{ "tiagovla/tokyodark.nvim", name = "tokyodark" },
-			{ "Mofiqul/vscode.nvim", name = "vscode" },
-			{ "NLKNguyen/papercolor-theme", name = "PaperColor" },
 			{ "nyoom-engineering/nyoom.nvim", name = "nyoom" },
-			{ "bluz71/vim-nightfly-colors", name = "nightfly" },
-			{ "bluz71/vim-moonfly-colors", name = "moonfly" },
-			{ "nyoom-engineering/oxocarbon.nvim", name = "carbon" },
+			{ "Mofiqul/dracula.nvim",         name = "dracula" },
+			{ "rose-pine/neovim",             name = "rose-pine" },
+			{ "catppuccin/nvim",              name = "catppuccin" },
+			{ "EdenEast/nightfox.nvim",       name = "nightfox" },
+			{ "ellisonleao/gruvbox.nvim",     name = "gruvbox",   opts = { contrast = "hard" } },
+			{ "navarasu/onedark.nvim",        name = "onedark" },
+			{ "tiagovla/tokyodark.nvim",      name = "tokyodark" },
+			{ "Mofiqul/vscode.nvim",          name = "vscode" },
+			{ "NLKNguyen/papercolor-theme",   name = "PaperColor" },
 		},
 		config = function()
-			require("nightfox").setup({
-				palettes = {
-					-- Custom duskfox with black background
-					duskfox = {
-						bg1 = "#000000", -- Black background
-						bg0 = "#1d1d2b", -- Alt backgrounds (floats, statusline, ...)
-						bg3 = "#121820", -- 55% darkened from stock
-						sel0 = "#131b24", -- 55% darkened from stock
-					},
-				},
-				specs = {
-					all = {
-						inactive = "bg0", -- Default value for other styles
-					},
-					duskfox = {
-						inactive = "#090909", -- Slightly lighter then black background
-					},
-				},
-				groups = {
-					all = {
-						NormalNC = { fg = "fg1", bg = "inactive" }, -- Non-current windows
-					},
-				},
-				options = {
-					colorblind = {
-						enable = true,
-						severity = {
-							protan = 0.3,
-							deutan = 0.6,
-						},
-					},
-				},
-			})
 			require("vscode").setup({
 				transparent = true,
-				italic_comments = true,
+				italic_comments = false,
 			})
 			require("onedark").setup({
-				style = "dark",
-				transparent = false,
-				term_colors = true,
+				style = "deep",
+				transparent = true,
+				term_colors = false,
 				toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer", "light" },
-				colors = {
-					bright_orange = "#0f8800", -- define a new color
-					green = "#019f0a", -- redefine an existing color
-				},
-				highlights = {
-					TSKeyword = { fg = "$green" },
-					TSString = { fg = "$bright_orange", bg = "#00ff00", fmt = "bold" },
-					TSFunction = { fg = "#0000ff", sp = "$cyan", fmt = "underline,italic" },
-					TSFuncBuiltin = { fg = "#0059ff" },
-				},
+				--	colors = {
+				--		bright_orange = "#0f8800", -- define a new color
+				--		green = "#019f0a", -- redefine an existing color
+				--	},
+				--	highlights = {
+				--		TSKeyword = { fg = "$green" },
+				--		TSString = { fg = "$bright_orange", bg = "#00ff00", fmt = "bold" },
+				--		TSFunction = { fg = "#0000ff", sp = "$cyan", fmt = "underline,italic" },
+				--		TSFuncBuiltin = { fg = "#0059ff" },
+				--	},
 			})
-			vim.opt.background = "dark" -- light
-
-			pcall(vim.cmd.colorscheme, "nightfly")
+			vim.o.background = "dark" -- light
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+			vim.api.nvim_set_hl(0, "Search", { fg = "#00a123", bg = "#00ff00" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+			pcall(vim.cmd.colorscheme, "tokyodark") -- nightfox is other best choice (sandeep)
 		end,
 	},
 	-- ]]]
@@ -128,7 +122,8 @@ require("lazy").setup({
 		dependencies = {
 			{
 				"nvim-treesitter/nvim-treesitter",
-				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", "nvim-treesitter/playground" },
+				dependencies = { "nvim-treesitter/nvim-treesitter-textobjects",
+					"nvim-treesitter/playground" },
 			},
 			{ "williamboman/mason.nvim", dependencies = { "williamboman/mason-lspconfig.nvim" } },
 			"folke/neodev.nvim",
@@ -198,7 +193,8 @@ require("lazy").setup({
 					require("lspconfig")[server_name].setup({
 						settings = lsp_servers[server_name],
 						handlers = {
-							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+							["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border =
+							"rounded" }),
 							["textDocument/signatureHelp"] = vim.lsp.with(
 								vim.lsp.handlers.signature_help,
 								{ border = "rounded" }
@@ -247,14 +243,14 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "stevearc/oil.nvim", opt = {} }, -- File manager like a BOSS
-	{ "pbrisbin/vim-mkdir" }, -- Automatically create directory if not exists
-	{ "fladson/vim-kitty" }, -- Support Kitty terminal config syntax
-	{ "towolf/vim-helm" }, -- Support for helm template syntax
-	{ "tpope/vim-surround" }, -- surrounding text objects
+	{ "stevearc/oil.nvim",         opt = {} }, -- File manager like a BOSS
+	{ "pbrisbin/vim-mkdir" },   -- Automatically create directory if not exists
+	{ "fladson/vim-kitty" },    -- Support Kitty terminal config syntax
+	{ "towolf/vim-helm" },      -- Support for helm template syntax
+	{ "tpope/vim-surround" },   -- surrounding text objects
 	{ "kevinhwang91/nvim-bqf" }, -- Preview quickfix list item.
-	{ "tpope/vim-eunuch" }, -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
-	{ "tpope/vim-sleuth" }, -- Heuristically set buffer options
+	{ "tpope/vim-eunuch" },     -- Helper commands like :Rename, :Move, :Delete, :Remove, ...
+	{ "tpope/vim-sleuth" },     -- Heuristically set buffer options
 	{ "windwp/nvim-autopairs" }, -- Auto insert pairs like () [] {}
 	{
 		"lewis6991/gitsigns.nvim",
@@ -275,7 +271,7 @@ require("lazy").setup({
 				vim.cmd.Git("push")
 			end, {})
 		end,
-	}, -- Best Git Client after magit :)
+	},                -- Best Git Client after magit :)
 	{ "dag/vim-fish" }, -- Vim fish syntax
 	{ "jansedivy/jai.vim" }, -- Jai from Jonathan Blow
 	{
@@ -465,7 +461,7 @@ require("lazy").setup({
 -- ==========================================================================
 -- ============================ Options ====================================
 -- ==========================================================================
-vim.opt.number = true -- Line numbers
+vim.opt.number = true         -- Line numbers
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.errorbells = false
 vim.opt.smartindent = true
@@ -474,29 +470,22 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undofile = false
 vim.opt.hlsearch = true
-vim.opt.incsearch = true
+vim.opt.incsearch = false
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.guicursor = ""
-vim.opt.shortmess:append("c") -- Don't pass messages to |ins-completion-menu|.
-vim.opt.shortmess:append("I") -- No Intro message
+vim.opt.shortmess:append("c")           -- Don't pass messages to |ins-completion-menu|.
+vim.opt.shortmess:append("I")           -- No Intro message
 vim.opt.clipboard:append("unnamedplus") -- use system clipboard as default register.
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-vim.cmd([[
-	set autoindent
-	set expandtab
-	set shiftwidth=2
-	set smartindent
-	set softtabstop=4
-	set tabstop=4
-]])
+
 -- ==========================================================================
 -- ========================= Keybindings ====================================
 -- ==========================================================================
@@ -564,8 +553,6 @@ bind("n", "n", "nzz")
 bind("n", "N", "Nzz")
 bind("n", "<CR>", [[ {-> v:hlsearch ? ':nohl<CR>' : '<CR>'}() ]], { expr = true })
 bind("n", "<leader>j", "<cmd>ToggleTerm<CR>")
-bind("n", "<C-[>", "<C-t>")
-bind("n", "<C-]>", "<C-]>")
 bind("n", "<leader>?", ":RustEnableInlayHints<Esc>")
 bind("n", "<leader>x", ":RustDisableInlayHints<Esc>")
 bind("n", "<leader>s", ":lua require('lsp_extensions').inlay_hints()<Esc>", { buffer = 0 })
@@ -606,5 +593,7 @@ local n_keymap = function(lhs, rhs)
 	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("t", lhs, rhs, { noremap = true, silent = true })
 end
-
 n_keymap("<esc>", "<esc>")
+bind("n", "‘", "<C-]>")
+bind("n", "“", "<C-t>")
+vim.cmd.highlight({ "Visual", "guifg=grey guibg=yellow cterm=NONE" })
